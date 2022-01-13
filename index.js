@@ -25,8 +25,17 @@ let persons = [
     }
 ]
 
+
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+    let singularPlural = persons.length === 1 ? "person" : "people";
+    const info = `Phonebook has info for ${persons.length} ${singularPlural}`
+    const date = new Date(); 
+    response.send(`<p> ${info} </p> ${date}`)
 })
 
 const PORT = 3001;
