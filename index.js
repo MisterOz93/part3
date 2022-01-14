@@ -57,6 +57,11 @@ app.post('/api/persons', (request, response) => {
             error: "Entry is missing a name and/or a number."
         })
     }
+    else if (persons.map(person => person.name).includes(data.name)){
+        return response.status(400).json({
+            error: "Name must be unique."
+        })
+    }
   else {
       const person = {
           id: Math.floor(Math.random() * (10000000 - 1) + 1),
