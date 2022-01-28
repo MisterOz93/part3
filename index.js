@@ -3,7 +3,7 @@ const app = express();
 require('dotenv').config()
 const morgan = require('morgan');
 const cors = require('cors');
-const Person = require('./models/person')
+const Person = require('./models/person');
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -21,10 +21,10 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
     Person.find({}).then(people => {
       const len = people.length
-      let singularPlural = len === 1 ? "person" : "people";
-      const info = `Phonebook has info for ${len} ${singularPlural}`
+      const singularPlural = len === 1 ? "person" : "people";
+      const info = `The Phonebook currently has info for ${len} ${singularPlural}.`
       const date = new Date(); 
-      response.send(`<p> ${info} </p> ${date}`)
+      response.send(`${info} <br><br> ${date}`)
     })
 })
 
@@ -52,12 +52,6 @@ app.post('/api/persons', (request, response) => {
             error: "Entry is missing a name and/or a number."
         })
     }
-   /* re-add this in later exercise  
-    else if (persons.map(person => person.name).includes(data.name)){
-        return response.status(400).json({
-            error: "Name must be unique."
-        })
-    } */
   else {
       const person = new Person({
           name: data.name,
@@ -67,6 +61,25 @@ app.post('/api/persons', (request, response) => {
           response.json(savedPerson)
       })
     }
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const data = request.body;
+    if (!data.name || !data.number) {
+        return response.status(400).json({
+            error: "Missing name and/or number"
+        })
+    }
+
+    const person = {
+        name: data.name,
+        number: data.number,
+    }
+    
+    Person.findByIdAndUpdate(request.params.id, person, {new: true})
+    .then(updatedPerson => {
+        response.json(updatedPerson)
+    }).catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
