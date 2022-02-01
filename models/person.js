@@ -18,6 +18,18 @@ const personSchema = new mongoose.Schema({
     number: {
         type: String,
         required: true,
+        minlength: 8,
+        validate: {
+            validator: function(num) {
+                if (num.includes(`-`)){
+                    const arr = num.split('-');
+                    console.log (arr[0], arr[1])
+                    return arr[0].length > 1 && arr.length === 2;
+                }
+                return true
+            },
+            message: "Number can only have one '-' with at least 2 digits before it, and at least 1 after."
+        }
     }
 })
  

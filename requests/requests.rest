@@ -9,15 +9,15 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 { 
-    "name": "Bob",
-    "number": "123"
+    "name": "Brett",
+    "number": "10-22-334455"
     }
 
 ###
-PUT http://localhost:3001/api/persons/61ee313363f8f5566226aa18
+PUT http://localhost:3001/api/persons/61f4c48ed9d826de7978eee4
 Content-Type: application/json
 
 { 
     "name": "Foo McFooson",
-    "number": "777 777 7777"
+    "number": "777-7777"
 }
